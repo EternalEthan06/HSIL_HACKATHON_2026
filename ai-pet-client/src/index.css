@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap');
+
+:root {
+  --bg-top: #87CEEB; /* Sky Blue */
+  --bg-bottom: #98FB98; /* Grass Green */
+  --accent-pink: #FF69B4;
+  --accent-yellow: #FFD700;
+  --accent-blue: #1E90FF;
+  --panel-bg: rgba(255, 255, 255, 0.85);
+  --text-dark: #333333;
+  --text-light: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Fredoka', sans-serif;
+}
+
+body {
+  background-color: #87CEEB;
+  color: var(--text-dark);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background-image: url('/backyard.png');
+  background-size: cover;
+  background-position: center bottom;
+}
+
+/* 3D Scene / Pet Container */
+.scene-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Floating UI Layer */
+.ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through to pet */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+}
+
+/* Top HUD: Mini Stats */
+.top-hud {
+  pointer-events: auto;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.mini-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+  display: flex;
+}
+
+.stat-icon.health { color: #FF4757; }
+.stat-icon.happiness { color: #FFA502; }
+.stat-icon.hunger { color: #2ED573; }
+
+.progress-bg {
+  width: 60px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* The Pet Placeholder Image */
+.pet-image-placeholder {
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  pointer-events: none; /* Allows the canvas to rotate beneath it if needed */
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+  animation: floatBounce 3s ease-in-out infinite;
+}
+
+@keyframes floatBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.02); }
+}
+
+/* Bottom HUD: Actions & Chat */
+.bottom-hud {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 24px;
+}
+
+.action-btn {
+  background: white;
+  border: none;
+  border-radius: 30px;
+  padding: 16px 32px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  box-shadow: 0 10px 0 #d1d5db, 0 15px 20px rgba(0,0,0,0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.1s ease;
+}
+
+.action-btn:active {
+  transform: translateY(10px);
+  box-shadow: 0 0 0 #d1d5db, 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.action-btn.feed { color: #2ED573; }
+.action-btn.play { color: #FFA502; }
+
+/* Chat Bubble UI */
+.chat-container {
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.chat-history::-webkit-scrollbar { width: 0px; }
+
+.message {
+  padding: 16px 24px;
+  border-radius: 24px;
+  font-size: 1.2rem;
+  max-width: 80%;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.message.pet {
+  align-self: flex-start;
+  background: white;
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: var(--accent-blue);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.mic-btn {
+  background: var(--accent-blue);
+  border: none;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(30, 144, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.mic-btn.listening {
+  background: #FF4757;
+  animation: pulseMic 1.5s infinite;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.6);
+}
+
+@keyframes pulseMic {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Typing Indicator bouncing dots */
+.typing-indicator { display: flex; gap: 6px; padding: 12px; }
+.dot { width: 10px; height: 10px; background: #ccc; border-radius: 50%; animation: pB 1.4s infinite ease-in-out both; }
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+@keyframes pB { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
