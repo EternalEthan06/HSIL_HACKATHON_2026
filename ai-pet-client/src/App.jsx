@@ -407,7 +407,10 @@ export default function App() {
   
   // Shared state: We collect the data while they play, and view it in the clinic
   const [stats, setStats] = useState({ health: 90, happiness: 60, hunger: 40 });
-  const [uploadedReport, setUploadedReport] = useState("");
+  
+  // Pre-load the report state so the button/info is instantly visible for the judges!
+  const defaultDemoReportData = "PATIENT: Ethan\nDATE: 04/10/2026\nMETABOLIC PANEL:\n- 25-OH Vitamin D: 11.2 ng/mL (SEVERE DEFICIENCY)\n- Cortisol, AM: 23 mcg/dL (ELEVATED)\nCLINICAL NOTES:\nPatient complains of chronic fatigue, lethargy, and an inability to focus. Blood panel confirms severe Vitamin D deficiency coupled with high stress markers. Recommend rest and immediate cholecalciferol supplementation.";
+  const [uploadedReport, setUploadedReport] = useState(defaultDemoReportData);
   
   // Inject a mock alert natively so it shows up exactly how it should during presentation!
   const [alerts, setAlerts] = useState([
